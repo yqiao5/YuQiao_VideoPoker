@@ -473,22 +473,56 @@ bool check_flush(linked_list*hand)
 	return true;
 }
 
+
+
+
 bool check_straight(linked_list*hand)
 {
+	int check_arr[15] = {};
 	node card = {
 		get_itemType(hand, 0), get_itemFace(hand, 0), get_itemData(hand, 0)
 	};
-	int target_data = card.data + 1;
-	for (int i = 1; i < 5; i++) {
-		card = {
-			get_itemType(hand, i), get_itemFace(hand, i), get_itemData(hand, i)
-		};
-		if (card.data != target_data) {
-			return false;
-		}
-		target_data++;
+	for (int i = 0; i < 5; i++) {
+		node card = { get_itemType(hand, i), get_itemFace(hand, i), get_itemData(hand, i) };
+		check_arr[card.data]++;
 	}
-	return true;
+	 
+	for (int i = 0;  i < 15; i++) {
+		if (check_arr[i] == 1) {
+			return i;
+			break;
+		}
+		if (check_arr[i + 1] == 1 && check_arr[i + 2] == 1 && check_arr[i + 3] == 1 && check_arr[i + 4] == 1)
+		{
+			return true;
+		}
+	 }
+	return false;
+	
+}
+
+bool check_royal_straight(linked_list*hand)
+{
+	int check_arr[15] = {};
+	node card = {
+		get_itemType(hand, 0), get_itemFace(hand, 0), get_itemData(hand, 0)
+	};
+	for (int i = 0; i < 5; i++) {
+		node card = { get_itemType(hand, i), get_itemFace(hand, i), get_itemData(hand, i) };
+		check_arr[card.data]++;
+	}
+
+	for (int i = 10; i < 15; i++) {
+		if (check_arr[i] == 1) {
+			return i;
+		}
+		if (check_arr[i + 1] == 1 && check_arr[i + 2] == 1 && check_arr[i + 3] == 1 && check_arr[i + 4] == 1)
+		{
+			return true;
+		}
+	}
+	return false;
+
 }
 
 bool check_four(linked_list*hand) {
@@ -571,22 +605,21 @@ bool check_pair_2(linked_list*hand) {
 
 int check_hand(linked_list*hand) {
 	if (check_flush(hand)) {
-		if (check_straight(hand)) {
-			for (int i = 0; i < getSize(hand); i++) {
-				if (get_itemData(hand, i) == 14) {
-					cout << "------You have a royal flush!------" << endl;
-					return money = money + 800;
-				}
-
-
-			}
-			cout << "------You have a straight flush!------" << endl;
-			return money = money + 50;
-		}
+	/*	if (check_royal_straight(hand)) {
+			cout << "------You have a Royal flush!------" << endl;
+			return money = money + 800;
+		}*/
+	
 
 
 		cout << "------You have a flush!------" << endl;
 		return money = money+6;
+	}
+
+	if (check_straight(hand) && check_flush(hand)) {
+		
+		cout << "------You have a straight flush!------" << endl;
+		return money = money + 50;
 	}
 
 	if (check_four(hand)) {
@@ -596,10 +629,10 @@ int check_hand(linked_list*hand) {
 	}
 
 	if (check_three(hand)) {
-		if (check_pair_2(hand)) {
+		/*if (check_pair_2(hand)) {
 			cout << "------You have a full house!------" << endl;
 			return money = money + 9;
-		}
+		}*/
 
 
 
@@ -642,7 +675,10 @@ bool check_player_input(linked_list*deck, linked_list*hand, linked_list*keep_han
 			//keep_hand = hand;
 			print_items(hand);
 		}
-		check_hand(hand);
+		else {
+			print_items(hand);
+		}
+		//check_hand(hand);
 	    // hand = keep_hand;
 		return true;
 		
@@ -651,6 +687,12 @@ bool check_player_input(linked_list*deck, linked_list*hand, linked_list*keep_han
 		print_items(hand);
 		money--;
 		check_hand(hand);
+		for (int i = 0; i < 5; i++) {
+			remove_first(hand);
+		}
+
+		fill_hand(deck, hand);
+		print_items(hand);
 		return true;
 	}
 	else if (input == "none") {
@@ -669,6 +711,12 @@ bool check_player_input(linked_list*deck, linked_list*hand, linked_list*keep_han
 		
 		}
 		check_hand(hand);
+		for (int i = 0; i < 5; i++) {
+			remove_first(hand);
+		}
+
+		fill_hand(deck, hand);
+		print_items(hand);
 	//	hand = keep_hand;
 		
 	
@@ -709,11 +757,20 @@ int main()
 
 	while (true) {
 		print_menu();
+		cout << "----Cards left in deck:" << getSize(deck) << endl;
 		
 		if (check_player_input(deck, hand, keep_hand)) {
 
 			cout << "----------------------------------------------------------------Now you have: $ " << money << endl;
 		}
+		
+		/*for (int i = 0; i < 5; i++) {
+			remove_first(hand);
+		}
+		
+		fill_hand(deck, hand);
+		print_items(hand);*/
+
 		if (money <= 0)
 		{ cout << endl << "Out of money. GAME OVER" << endl; system("PAUSE"); break; }
 
