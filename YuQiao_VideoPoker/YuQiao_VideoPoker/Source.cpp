@@ -1,4 +1,18 @@
-﻿#include<iostream>
+﻿
+#define _CRTDBG_MAP_ALLOC
+#define _CRTDBG_MAP_ALLOC_NEW
+#include <cstdlib>
+#include <crtdbg.h>
+#ifdef _DEBUG
+#ifndef DBG_NEW
+#define DBG_NEW new ( _NORMAL_BLOCK , __FILE__ , __LINE__ )
+#define new DBG_NEW
+#endif
+#endif
+
+
+
+#include<iostream>
 #include<string>
 #include<ctime>
 
@@ -540,9 +554,37 @@ bool check_pair(linked_list*hand) {
 	return false;
 }
 
+bool check_pair_2(linked_list*hand) {
+	int check_arr[15] = {};
+	for (int i = 0; i < 5; i++) {
+		node card = { get_itemType(hand, i), get_itemFace(hand, i), get_itemData(hand, i) };
+		check_arr[card.data]++;
+	}
+	for (int i = 0; i < 15; i++) {
+		if (check_arr[i] = 2) {
+			return true;
+		}
+	}
+	return false;
+}
+
 
 int check_hand(linked_list*hand) {
 	if (check_flush(hand)) {
+		if (check_straight(hand)) {
+			for (int i = 0; i < getSize(hand); i++) {
+				if (get_itemData(hand, i) == 14) {
+					cout << "------You have a royal flush!------" << endl;
+					return money = money + 800;
+				}
+
+
+			}
+			cout << "------You have a straight flush!------" << endl;
+			return money = money + 50;
+		}
+
+
 		cout << "------You have a flush!------" << endl;
 		return money = money+6;
 	}
@@ -554,6 +596,13 @@ int check_hand(linked_list*hand) {
 	}
 
 	if (check_three(hand)) {
+		if (check_pair_2(hand)) {
+			cout << "------You have a full house!------" << endl;
+			return money = money + 9;
+		}
+
+
+
 		cout << "------You have three of a kind!------" << endl;
 		
 		return money = money+3;
@@ -636,6 +685,12 @@ bool check_player_input(linked_list*deck, linked_list*hand, linked_list*keep_han
 
 int main()
 {
+	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF |
+		_CRTDBG_LEAK_CHECK_DF);
+
+
+
+
 	srand(time(NULL));
 	linked_list* deck = create_linked_list();
 	
@@ -669,6 +724,6 @@ int main()
 	//add_last(deck, 66);
 
 	system("pause");
-
+		
 };
 
