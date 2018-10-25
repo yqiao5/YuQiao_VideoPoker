@@ -191,8 +191,7 @@ void print_menu() {
 		<< "all     ---- To keep all the cards" << endl
 		<< "none    ---- To discard all the cards and replace them" << endl
 		<< "deck    ---- View the cards left in the deck" << endl
-	    << "swap    ---- swap a card in your hand with the card you want" << endl;
-		 
+	    << "swap    ---- swap a card in your hand with the card you want" << endl;	 
 
 }
 
@@ -302,8 +301,6 @@ void fill_hand(linked_list*deck, linked_list*hand)
 		get_Card(deck, hand);
 	}
 }
-
-
 
 //how many cards left in the deck
 void check_cardsLeft(linked_list* deck) {
@@ -442,7 +439,7 @@ bool swap_card(linked_list*deck, linked_list*hand, linked_list*keep_hand) {
 			add_last(hand, get_itemType(deck, i), get_itemFace(deck, i), get_itemData(deck, i));
 			remove_item(deck, i);
 			cout << endl << "Card swapped!" << endl;
-			money--;
+			
 		
 			return true;
 		}
@@ -453,8 +450,6 @@ bool swap_card(linked_list*deck, linked_list*hand, linked_list*keep_hand) {
 	return false;
 
 }
-
-
 
 // check card conditions
 bool check_flush(linked_list*hand)
@@ -475,7 +470,6 @@ bool check_flush(linked_list*hand)
 
 
 
-
 bool check_straight(linked_list*hand)
 {
 	int check_arr[15] = {};
@@ -488,14 +482,13 @@ bool check_straight(linked_list*hand)
 	}
 	 
 	for (int i = 0;  i < 15; i++) {
-		if (check_arr[i] == 1) {
-			return i;
+		if (check_arr[i] == 1 && check_arr[i + 1] == 1 && check_arr[i + 2] == 1 && check_arr[i + 3] == 1 && check_arr[i + 4] == 1) {
+			
+			return  true;
 			break;
+			
 		}
-		if (check_arr[i + 1] == 1 && check_arr[i + 2] == 1 && check_arr[i + 3] == 1 && check_arr[i + 4] == 1)
-		{
-			return true;
-		}
+		
 	 }
 	return false;
 	
@@ -513,13 +506,10 @@ bool check_royal_straight(linked_list*hand)
 	}
 
 	for (int i = 10; i < 15; i++) {
-		if (check_arr[i] == 1) {
-			return i;
-		}
-		if (check_arr[i + 1] == 1 && check_arr[i + 2] == 1 && check_arr[i + 3] == 1 && check_arr[i + 4] == 1)
-		{
+		if (check_arr[i] == 1 && check_arr[i + 1] == 1 && check_arr[i + 2] == 1 && check_arr[i + 3] == 1 && check_arr[i + 4] == 1) {
 			return true;
 		}
+	
 	}
 	return false;
 
@@ -595,32 +585,32 @@ bool check_pair_2(linked_list*hand) {
 		check_arr[card.data]++;
 	}
 	for (int i = 0; i < 15; i++) {
-		if (check_arr[i] = 2) {
+		if (check_arr[i] = 2 && check_arr[i] <3) {
 			return true;
 		}
 	}
 	return false;
 }
 
-
+// Bonus: straight flush, royal flush and Full House
 int check_hand(linked_list*hand) {
 	if (check_flush(hand)) {
-	/*	if (check_royal_straight(hand)) {
-			cout << "------You have a Royal flush!------" << endl;
-			return money = money + 800;
-		}*/
+		if (check_straight(hand)) {
+			for (int i = 0; i < 5; i++) {
+				if (get_itemData(hand, i) == 14) {
+					cout << "------You have a Royal flush!------" << endl;
+					return money = money + 800;
+				}
+			} 
+			cout << "------You have a straight flush!------" << endl;
+			return money = money + 50;
+		}
 	
-
-
 		cout << "------You have a flush!------" << endl;
 		return money = money+6;
 	}
 
-	if (check_straight(hand) && check_flush(hand)) {
-		
-		cout << "------You have a straight flush!------" << endl;
-		return money = money + 50;
-	}
+
 
 	if (check_four(hand)) {
 		cout << "------You have four of a kind!------" << endl;
@@ -629,10 +619,10 @@ int check_hand(linked_list*hand) {
 	}
 
 	if (check_three(hand)) {
-		/*if (check_pair_2(hand)) {
+		if (check_pair_2(hand)) {
 			cout << "------You have a full house!------" << endl;
 			return money = money + 9;
-		}*/
+		}
 
 
 
@@ -777,8 +767,7 @@ int main()
 	};
 
 
-	//add_first(deck, 24);
-	//add_last(deck, 66);
+	
 
 	system("pause");
 		
