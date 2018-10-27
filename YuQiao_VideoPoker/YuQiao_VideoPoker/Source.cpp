@@ -173,7 +173,6 @@ void clear(linked_list*list)
 		delete temp;
 	}
 	delete list;
-	list->count = 0;
 }
 
 int getSize(linked_list*list) {
@@ -678,7 +677,7 @@ bool check_player_input(linked_list*deck, linked_list*hand, linked_list*keep_han
 	string input;
 
 	cin >> input;
-	if (input == "exit") return false;
+	if (input == "exit") { return false; }
 	else if (input == "deck") {
 		view_deck(deck);
 		
@@ -776,6 +775,11 @@ int main()
 
 			cout << "----------------------------------------------------------------Now you have: $ " << money << endl;
 		}
+		else {
+			return false;
+			break;
+		}
+	
 		
 		/*for (int i = 0; i < 5; i++) {
 			remove_first(hand);
@@ -785,14 +789,20 @@ int main()
 		print_items(hand);*/
 
 		if (money <= 0)
-		{ cout << endl << "Out of money. GAME OVER" << endl; system("PAUSE"); break; }
+		{ cout << endl << "Out of money. GAME OVER" << endl; system("PAUSE"); 
+		clear(keep_hand);
+		clear(deck);
+		clear(hand);
+		break; }
 
 	};
 
 
-	
+	clear(keep_hand);
+	clear(deck);
+	clear(hand);
 
-	system("pause");
+	//system("pause");
 		
 };
 
