@@ -578,18 +578,32 @@ bool check_pair(linked_list*hand) {
 	return false;
 }
 
-bool check_pair_2(linked_list*hand) {
-	int check_arr[15] = {};
+bool check_full(linked_list*hand) {
+	int check_arr_full[15] = {};
 	for (int i = 0; i < 5; i++) {
 		node card = { get_itemType(hand, i), get_itemFace(hand, i), get_itemData(hand, i) };
-		check_arr[card.data]++;
+		
+		check_arr_full[card.data]++;
+	
 	}
 	for (int i = 0; i < 15; i++) {
-		if (check_arr[i] = 2 && check_arr[i] <3) {
-			return true;
+
+		if (check_arr_full[i] >= 3) {
+			check_arr_full[i] = 0;
+			
 		}
 	}
-	return false;
+
+	for (int j = 0; j < 15; j++) {
+		if (check_arr_full[j] >= 2 && check_arr_full[j]<3) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+
+	
 }
 
 // Bonus: straight flush, royal flush and Full House
@@ -619,19 +633,28 @@ int check_hand(linked_list*hand) {
 	}
 
 	if (check_three(hand)) {
-		if (check_pair_2(hand)) {
+		if (check_full(hand)) {
 			cout << "------You have a full house!------" << endl;
 			return money = money + 9;
+
 		}
+		else {
 
+			cout << "------You have three of a kind!------" << endl;
 
-
-		cout << "------You have three of a kind!------" << endl;
+			return money = money + 3;
+		}
 		
-		return money = money+3;
 	}
 
+	
+
 	if (check_pair(hand)) {
+		if (check_twopair(hand)) {
+			cout << "------You have two pairs!------" << endl;
+
+			return money = money + 2;
+		}
 		cout << "------You have a pair of Jack or Higher!-------" << endl;
 		
 		return money = money+1;
@@ -698,9 +721,9 @@ bool check_player_input(linked_list*deck, linked_list*hand, linked_list*keep_han
 	}
 	else if (input == "keep") {
 		if (keep_Cards(deck, hand, keep_hand)) {
-		
+			check_hand(hand);
 		}
-		check_hand(hand);
+		
 		for (int i = 0; i < 5; i++) {
 			remove_first(hand);
 		}
