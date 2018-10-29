@@ -717,6 +717,7 @@ bool check_player_input(linked_list*deck, linked_list*hand, linked_list*keep_han
 		check_hand(hand);
 		money--;
 		return true;
+		
 	}
 	else if (input == "keep") {
 		if (keep_Cards(deck, hand, keep_hand)) {
@@ -767,35 +768,49 @@ int main()
 	//keep_Cards(deck, hand, keep_hand);
 	cout << "----------------------------------------------------------------Now you have: $ " << money << endl;
 
+	char input;
+	bool gameplay = true;
+
+
 	while (true) {
-		print_menu();
-		cout << "----Cards left in deck:" << getSize(deck) << endl;
-		
-		if (check_player_input(deck, hand, keep_hand)) {
+			print_menu();
+			cout << "----Cards left in deck:" << getSize(deck) << endl;
 
-			cout << "----------------------------------------------------------------Now you have: $ " << money << endl;
-		}
-		else {
-			return false;
-			break;
-		}
+			if (check_player_input(deck, hand, keep_hand)) {
+
+				cout << "----------------------------------------------------------------Now you have: $ " << money << endl;
+			}
+
+
+			else {	
+					break;
+			}
+
+
+			cout << endl << "Hit ENTER to continue" << endl;
+			cin.ignore(1000, '\n');
+			cin.get();
+
+
+			/*for (int i = 0; i < 5; i++) {
+				remove_first(hand);
+			}
+
+			fill_hand(deck, hand);
+			print_items(hand);*/
+
+			if (money <= 0)
+			{
+				cout << endl << "Out of money. GAME OVER" << endl; system("PAUSE");
+				clear(keep_hand);
+				clear(deck);
+				clear(hand);
+				break;
+			}
+
+		};
 	
-		
-		/*for (int i = 0; i < 5; i++) {
-			remove_first(hand);
-		}
-		
-		fill_hand(deck, hand);
-		print_items(hand);*/
-
-		if (money <= 0)
-		{ cout << endl << "Out of money. GAME OVER" << endl; system("PAUSE"); 
-		clear(keep_hand);
-		clear(deck);
-		clear(hand);
-		break; }
-
-	};
+	
 
 
 	clear(keep_hand);
