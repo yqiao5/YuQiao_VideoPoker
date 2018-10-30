@@ -699,12 +699,12 @@ bool check_player_input(linked_list*deck, linked_list*hand, linked_list*keep_han
 		print_items(hand);
 		money--;
 		check_hand(hand);
-		for (int i = 0; i < 5; i++) {
+	/*	for (int i = 0; i < 5; i++) {
 			remove_first(hand);
 		}
 
 		fill_hand(deck, hand);
-		print_items(hand);
+		print_items(hand);*/
 		return true;
 	}
 	else if (input == "none") {
@@ -724,12 +724,12 @@ bool check_player_input(linked_list*deck, linked_list*hand, linked_list*keep_han
 			check_hand(hand);
 		}
 		
-		for (int i = 0; i < 5; i++) {
+	/*	for (int i = 0; i < 5; i++) {
 			remove_first(hand);
 		}
 
 		fill_hand(deck, hand);
-		print_items(hand);
+		print_items(hand);*/
 	//	hand = keep_hand;
 		
 	
@@ -785,7 +785,12 @@ int main()
 			else {	
 					break;
 			}
+			for (int i = 0; i < 5; i++) {
+				remove_first(hand);
+			}
 
+			fill_hand(deck, hand);
+			print_items(hand);
 
 			cout << endl << "Hit ENTER to continue" << endl;
 			cin.ignore(1000, '\n');
